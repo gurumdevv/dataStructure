@@ -1,8 +1,8 @@
-package Tree;
+package Hash;
 
 import java.util.Scanner;
 
-public class BinarySearchTreeTester {
+public class ChainHashTester {
 
     static Scanner sc = new Scanner(System.in);
 
@@ -36,10 +36,10 @@ public class BinarySearchTreeTester {
     }
 
     enum Menu {
-        ADD("삽입"),
+        ADD("추가"),
         REMOVE("삭제"),
         SEARCH("검색"),
-        PRINT("출력"),
+        DUMP("출력"),
         TERMINATE("종료");
 
         private final String message;
@@ -76,33 +76,33 @@ public class BinarySearchTreeTester {
     public static void main(String[] args) {
         Menu menu;
         Data data;
-        Data pointer;
         Data temp = new Data();
-        BinarySearchTree<Integer, Data> tree = new BinarySearchTree<Integer, Data>();
+
+        ChainHash<Integer, Data> hashTable = new ChainHash<Integer, Data>(13);
 
         do {
             switch (menu = SelectMenu()) {
 
                 case ADD:
                     data = new Data();
-                    data.scanData("삽입", Data.NO | Data.NAME);
-                    tree.add(data.keyCode(), data);
+                    data.scanData("추가", Data.NO | Data.NAME);
+                    hashTable.add(data.keyCode(), data);
                     break;
 
                 case REMOVE:
                     temp.scanData("삭제", Data.NO);
-                    tree.remove(temp.keyCode());
+                    hashTable.remove(temp.keyCode());
                     break;
 
                 case SEARCH:
                     temp.scanData("검색", Data.NO);
-                    pointer = tree.search(temp.keyCode());
-                    if (pointer != null) System.out.println("해당하는 번호의 이름은 " + pointer + "입니다.");
+                    Data result = hashTable.search(temp.keyCode());
+                    if (result != null) System.out.println("해당하는 번호의 이름은 " + result + "입니다.");
                     else System.out.println("해당 데이터가 없습니다.");
                     break;
 
-                case PRINT:
-                    tree.print();
+                case DUMP:
+                    hashTable.dump();
                     break;
             }
         } while (menu != Menu.TERMINATE);
