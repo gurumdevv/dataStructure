@@ -7,30 +7,30 @@ public class BruteForce {
     static Scanner sc = new Scanner(System.in);
 
     static int bruteForceMatch(String text, String pattern) {
-        int pointer = 0;
-        int prePointer = 0;
+        int textPointer = 0;
+        int patternPointer = 0;
 
-        while (pointer != text.length() && prePointer != pattern.length()) {
-            if (text.charAt(pointer) == pattern.charAt(prePointer)) {
-                prePointer++;
-                pointer++;
+        while (textPointer != text.length() && patternPointer != pattern.length()) {
+            if (text.charAt(textPointer) == pattern.charAt(patternPointer)) {
+                textPointer++;
+                patternPointer++;
             } else {
-                pointer = pointer - prePointer + 1;
-                prePointer = 0;
+                textPointer = textPointer - patternPointer + 1; //원복 후 다음 위치로 이동
+                patternPointer = 0;
             }
         }
 
-        if (prePointer == pattern.length()) {
-            return pointer - prePointer;
+        if (patternPointer == pattern.length()) { //검색 성공
+            return textPointer - patternPointer;
         }
-        return -1;
+        return -1; //검색 실패
     }
 
     public static void main(String[] args) {
-        System.out.println("텍스트: ");
+        System.out.print("텍스트: ");
         String s1 = sc.next();
 
-        System.out.println("패 턴: ");
+        System.out.print("패 턴: ");
         String s2 = sc.next();
 
         int index = bruteForceMatch(s1, s2);
