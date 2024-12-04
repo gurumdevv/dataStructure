@@ -3,44 +3,44 @@ package MergeSort;
 import java.util.Scanner;
 
 public class MergeSort {
-    static int[] buffer;
+    static int[] temp;
 
     static void __mergeSort(int[] a, int left, int right) {
         if (left < right) {
             int i;
             int center = (left + right) / 2;
-            int pointer = 0;
+            int tempPointer = 0;
             int j = 0;
-            int originIndex = left;
+            int aPointer = left;
 
+            //병합에 앞서서 왼쪽과 오른쪽 배열을 정렬
             __mergeSort(a, left, center);
             __mergeSort(a, center + 1, right);
 
+            //원본 배열의 왼쪽 부분을 temp 배열로 복사
             for (i = left; i <= center; i++) {
-                buffer[pointer++] = a[i];
+                temp[tempPointer++] = a[i];
             }
 
-            /*
-                i == center + 1 -> i <= right 의미: center + 1 ~ right
-                j == 0, pointer == center - left + 1 ->  j < pointer 의미: left ~ center (buffer의 모든 요소)
-                j < pointer 인 이유: buffer의 저장된 갯수가 center - left + 1  일 때 Max Index는 -1 한 값인 center - left 이므로 =(등호)가 포함 안 됨
-            */
-            while (i <= right && j < pointer) {
-                a[originIndex++] = (buffer[j] <= a[i]) ? buffer[j++] : a[i++];
+            //처음 i는 center + 1로 증가하면서 원본 배열의 오른쪽 부분을 담당함
+            //왼쪽 배열과 오른쪽 배열의 병합 과정
+            while (i <= right && j < tempPointer) {
+                a[aPointer++] = (temp[j] <= a[i]) ? temp[j++] : a[i++];
             }
 
-            while (j < pointer) {
-                a[originIndex++] = buffer[j++];
+            //temp 배열의 나머지를 원본 배열에 복사
+            while (j < tempPointer) {
+                a[aPointer++] = temp[j++];
             }
         }
     }
 
     static void mergeSort(int[] a, int n) {
-        buffer = new int[n];
+        temp = new int[n];
 
         __mergeSort(a, 0, n - 1);
 
-        buffer = null;
+        temp = null;
     }
 
     public static void main(String[] args) {
